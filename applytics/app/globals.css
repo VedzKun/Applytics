@@ -2,6 +2,7 @@
 
 :root {
   --background: #000000;
+  --page-bg: #040416; /* slightly lighter than footer to separate sections */
   --foreground: #ffffff;
   --primary: #3b82f6; /* blue-500 */
   --primary-dark: #2563eb; /* blue-600 */
@@ -42,7 +43,7 @@ html {
 }
 
 body {
-  background: var(--background);
+  background: var(--page-bg);
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   line-height: 1.6;

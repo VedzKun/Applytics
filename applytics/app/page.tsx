@@ -193,8 +193,8 @@ export default function Home() {
       <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="card gradient-bg-animated text-white text-center py-16 px-8">
-            <h2 className="text-4xl font-bold mb-4">Ready to Transform Your Hiring?</h2>
-            <p className="text-xl opacity-90 mb-8">Start matching candidates to opportunities in seconds.</p>
+            <h2 className="text-4xl font-bold mb-4 text-[var(--primary)]">Ready to Transform Your Hiring?</h2>
+            <p className="text-xl text-white/90 mb-8">Start matching candidates to opportunities in seconds.</p>
             <Link href="/dashboard" className="btn bg-white text-[var(--primary)] text-lg px-8 py-4 hover:bg-gray-100">
               Get Started Free →
             </Link>
@@ -202,11 +202,16 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Divider between CTA and footer */}
+      <div className="max-w-4xl mx-auto px-6">
+        <hr className="border-t border-[var(--border)] opacity-30 my-12" />
+      </div>
+
       {/* Footer */}
       <footer className="py-16 px-6 bg-black text-white mt-24">
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="text-3xl md:text-5xl font-semibold mb-6">
-            We're here to help! <span className="text-[var(--primary)]">Contact us</span>
+            We're here to help! <span className="text-[var(--primary-dark)]">Contact us</span>
           </h2>
 
           <div className="flex items-center justify-center gap-6 mb-8">
@@ -219,7 +224,7 @@ export default function Home() {
           <hr className="border-t border-[var(--border)] opacity-20 my-8" />
 
           <div className="mt-8">
-            <div className="text-[var(--primary)] font-extrabold mx-auto" style={{fontSize: 'clamp(48px, 12vw, 200px)', lineHeight: 0.9}}>
+            <div className="text-[var(--primary-dark)] font-extrabold mx-auto" style={{fontSize: 'clamp(48px, 12vw, 200px)', lineHeight: 0.9}}>
               Applytics
             </div>
           </div>
