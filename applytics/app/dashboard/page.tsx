@@ -2,7 +2,6 @@
 
 import { useState, useRef, useCallback } from "react";
 import Link from "next/link";
-import Logo from "../components/Logo";
 
 type ParsedResume = {
   name?: string;
@@ -316,10 +315,25 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <header className="sticky top-0 z-50 glass border-b border-[var(--border)]">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <header
+        className="z-50 glass border-[var(--border)]"
+        style={{
+          position: "fixed",
+          left: "50%",
+          top: "20px",
+          transform: "translateX(-50%)",
+          width: "min(96%, 1100px)",
+          padding: "8px 18px",
+          borderRadius: "9999px",
+          boxShadow: "0 8px 24px rgba(2,6,23,0.12)",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+          zIndex: 50,
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-2 py-0 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <Logo className="w-10 h-10 rounded-lg" />
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] flex items-center justify-center text-white font-bold">AT</div>
             <span className="text-xl font-bold">Applytics</span>
           </Link>
           <div className="flex items-center gap-3">

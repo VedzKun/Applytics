@@ -1,14 +1,26 @@
 import Link from "next/link";
-import Logo from "./components/Logo";
 
 export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-[var(--border)]">
-        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+      <nav
+        className="fixed z-50 glass border-[var(--border)]"
+        style={{
+          left: "50%",
+          top: "24px",
+          transform: "translateX(-50%)",
+          width: "min(96%, 1100px)",
+          padding: "8px 18px",
+          borderRadius: "9999px",
+          boxShadow: "0 10px 30px rgba(2,6,23,0.12)",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-2 py-0 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <Logo className="w-10 h-10 rounded-lg" />
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] flex items-center justify-center text-white font-bold">AT</div>
             <span className="text-xl font-bold">Applytics</span>
           </Link>
 
