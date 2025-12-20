@@ -203,7 +203,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-16 px-6 bg-black text-white">
+      <footer className="py-16 px-6 bg-black text-white mt-24">
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="text-3xl md:text-5xl font-semibold mb-6">
             We're here to help! <span className="text-[var(--primary)]">Contact us</span>
