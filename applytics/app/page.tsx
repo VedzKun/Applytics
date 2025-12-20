@@ -1,18 +1,18 @@
 import Link from "next/link";
+import Logo from "./components/Logo";
 
 export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-[var(--border)]">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">A</span>
-            </div>
+        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3">
+            <Logo className="w-10 h-10 rounded-lg" />
             <span className="text-xl font-bold">Applytics</span>
           </Link>
-          <div className="flex items-center gap-4">
+
+          <div className="hidden md:flex items-center gap-8">
             <Link href="#features" className="text-[var(--muted)] hover:text-[var(--foreground)] transition">
               Features
             </Link>
@@ -20,7 +20,13 @@ export default function Home() {
               How it works
             </Link>
             <Link href="/dashboard" className="btn btn-primary">
-              Try Now →
+              Try Now
+            </Link>
+          </div>
+
+          <div className="md:hidden">
+            <Link href="/dashboard" className="btn btn-primary px-3 py-2">
+              Try
             </Link>
           </div>
         </div>
@@ -108,32 +114,32 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                icon: "📄",
+                icon: "",
                 title: "Smart Parsing",
                 description: "Extract names, emails, skills, education, and work history automatically from any resume format."
               },
               {
-                icon: "🎯",
+                icon: "",
                 title: "Intelligent Matching",
                 description: "Advanced algorithm matches candidates to job requirements with detailed scoring breakdown."
               },
               {
-                icon: "💪",
+                icon: "",
                 title: "Resume Strength",
                 description: "Analyze resume quality and get actionable tips to improve candidate profiles."
               },
               {
-                icon: "📊",
+                icon: "",
                 title: "Skills Gap Analysis",
                 description: "Identify missing skills and get curated learning resources for career growth."
               },
               {
-                icon: "🔌",
+                icon: "",
                 title: "REST API",
                 description: "Easy-to-use APIs for parsing, matching, and analysis. Integrate anywhere."
               },
               {
-                icon: "⚡",
+                icon: "",
                 title: "Real-time Results",
                 description: "Get instant results with our optimized processing engine. No waiting."
               }

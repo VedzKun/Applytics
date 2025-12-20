@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from "react";
 import Link from "next/link";
+import Logo from "../components/Logo";
 
 type ParsedResume = {
   name?: string;
@@ -317,10 +318,8 @@ export default function DashboardPage() {
       {/* Header */}
       <header className="sticky top-0 z-50 glass border-b border-[var(--border)]">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">A</span>
-            </div>
+          <Link href="/" className="flex items-center gap-3">
+            <Logo className="w-10 h-10 rounded-lg" />
             <span className="text-xl font-bold">Applytics</span>
           </Link>
           <div className="flex items-center gap-3">
@@ -339,7 +338,6 @@ export default function DashboardPage() {
         {error && (
           <div className="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 animate-fade-in">
             <div className="flex items-center gap-2">
-              <span>⚠️</span>
               <span>{error}</span>
               <button onClick={() => setError(null)} className="ml-auto text-red-400 hover:text-red-600">✕</button>
             </div>
@@ -351,9 +349,7 @@ export default function DashboardPage() {
           {/* Resume Input */}
           <div className="card">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold flex items-center gap-2">
-                <span className="text-2xl">📄</span> Resume
-              </h2>
+              <h2 className="text-lg font-semibold flex items-center gap-2">Resume</h2>
               {/* Input Mode Toggle */}
               <div className="flex items-center gap-2 bg-[var(--background)] rounded-lg p-1">
                 <button
@@ -364,7 +360,7 @@ export default function DashboardPage() {
                       : "text-[var(--muted)] hover:text-[var(--foreground)]"
                   }`}
                 >
-                  ✏️ Text
+                  Text
                 </button>
                 <button
                   onClick={() => setInputMode("pdf")}
@@ -374,7 +370,7 @@ export default function DashboardPage() {
                       : "text-[var(--muted)] hover:text-[var(--foreground)]"
                   }`}
                 >
-                  📎 PDF
+                  PDF
                 </button>
               </div>
             </div>
@@ -423,12 +419,12 @@ export default function DashboardPage() {
                   
                   {uploading ? (
                     <div className="py-4">
-                      <div className="animate-spin text-4xl mb-3">⏳</div>
+                      <div className="animate-spin text-4xl mb-3"></div>
                       <p className="text-[var(--muted)]">Processing PDF...</p>
                     </div>
                   ) : uploadedFile ? (
                     <div className="py-4">
-                      <div className="text-4xl mb-3">✅</div>
+                      <div className="text-4xl mb-3"></div>
                       <p className="font-medium text-green-600 dark:text-green-400 mb-1">
                         {uploadedFile.name}
                       </p>
@@ -447,7 +443,7 @@ export default function DashboardPage() {
                     </div>
                   ) : (
                     <div className="py-4">
-                      <div className="text-4xl mb-3">📤</div>
+                      <div className="text-4xl mb-3"></div>
                       <p className="font-medium mb-1">
                         {dragActive ? "Drop your PDF here!" : "Drag & drop your resume PDF"}
                       </p>
@@ -462,9 +458,7 @@ export default function DashboardPage() {
                 {resumeText && uploadedFile && (
                   <div className="mt-4">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-[var(--muted)]">
-                        📝 Extracted Text Preview
-                      </span>
+                      <span className="text-sm font-medium text-[var(--muted)]">Extracted Text Preview</span>
                       <span className="text-xs text-[var(--muted)]">
                         {resumeText.length} chars
                       </span>
@@ -482,9 +476,7 @@ export default function DashboardPage() {
           {/* Job Description Input */}
           <div className="card">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold flex items-center gap-2">
-                <span className="text-2xl">💼</span> Job Description
-              </h2>
+              <h2 className="text-lg font-semibold flex items-center gap-2">Job Description</h2>
               <span className="text-sm text-[var(--muted)]">
                 {jobDesc.length} chars
               </span>
@@ -506,12 +498,12 @@ export default function DashboardPage() {
             disabled={loading}
             className="btn btn-primary text-lg px-8 py-4"
           >
-            {loading && activeTab === "match" ? (
+              {loading && activeTab === "match" ? (
               <span className="flex items-center gap-2">
-                <span className="animate-spin">⏳</span> Matching...
+                <span className="animate-spin"></span> Matching...
               </span>
             ) : (
-              <>🎯 Match Resume to Job</>
+              <>Match Resume to Job</>
             )}
           </button>
           <button
@@ -519,14 +511,14 @@ export default function DashboardPage() {
             disabled={loading}
             className="btn btn-secondary text-lg px-6 py-4"
           >
-            {loading && activeTab === "parse" ? "Parsing..." : "📋 Parse Only"}
+            {loading && activeTab === "parse" ? "Parsing..." : "Parse Only"}
           </button>
           <button
             onClick={handleStrength}
             disabled={loading}
             className="btn btn-secondary text-lg px-6 py-4"
           >
-            {loading && activeTab === "strength" ? "Analyzing..." : "💪 Check Strength"}
+            {loading && activeTab === "strength" ? "Analyzing..." : "Check Strength"}
           </button>
         </div>
 
@@ -536,7 +528,7 @@ export default function DashboardPage() {
             {/* Tab Navigation */}
             <div className="flex gap-2 mb-6 border-b border-[var(--border)]">
               {matchResult && (
-                <button
+                  <button
                   onClick={() => setActiveTab("match")}
                   className={`px-4 py-3 font-medium transition border-b-2 -mb-px ${
                     activeTab === "match"
@@ -544,11 +536,11 @@ export default function DashboardPage() {
                       : "border-transparent text-[var(--muted)] hover:text-[var(--foreground)]"
                   }`}
                 >
-                  🎯 Match Results
+                  Match Results
                 </button>
               )}
               {strengthResult && (
-                <button
+                  <button
                   onClick={() => setActiveTab("strength")}
                   className={`px-4 py-3 font-medium transition border-b-2 -mb-px ${
                     activeTab === "strength"
@@ -556,11 +548,11 @@ export default function DashboardPage() {
                       : "border-transparent text-[var(--muted)] hover:text-[var(--foreground)]"
                   }`}
                 >
-                  💪 Resume Strength
+                  Resume Strength
                 </button>
               )}
               {parsed && (
-                <button
+                  <button
                   onClick={() => setActiveTab("parse")}
                   className={`px-4 py-3 font-medium transition border-b-2 -mb-px ${
                     activeTab === "parse"
@@ -568,7 +560,7 @@ export default function DashboardPage() {
                       : "border-transparent text-[var(--muted)] hover:text-[var(--foreground)]"
                   }`}
                 >
-                  📋 Parsed Data
+                  Parsed Data
                 </button>
               )}
             </div>
@@ -639,7 +631,7 @@ export default function DashboardPage() {
                           <span key={skill} className="skill-tag skill-missing">{skill}</span>
                         ))
                       ) : (
-                        <span className="text-green-500 text-sm">All required skills matched! 🎉</span>
+                        <span className="text-green-500 text-sm">All required skills matched!</span>
                       )}
                     </div>
                   </div>
@@ -661,9 +653,7 @@ export default function DashboardPage() {
                 {/* Recommendations */}
                 {matchResult.recommendations.length > 0 && (
                   <div className="card">
-                    <h3 className="font-semibold mb-4 flex items-center gap-2">
-                      <span>💡</span> Recommendations
-                    </h3>
+                    <h3 className="font-semibold mb-4 flex items-center gap-2">Recommendations</h3>
                     <ul className="space-y-2">
                       {matchResult.recommendations.map((rec, i) => (
                         <li key={i} className="flex items-start gap-2 text-[var(--muted)]">
@@ -696,12 +686,7 @@ export default function DashboardPage() {
                                   rel="noopener noreferrer"
                                   className="text-sm text-[var(--muted)] hover:text-[var(--primary)] flex items-center gap-1"
                                 >
-                                  <span>
-                                    {r.type === "course" && "🎓"}
-                                    {r.type === "documentation" && "📖"}
-                                    {r.type === "tutorial" && "📝"}
-                                    {r.type === "certification" && "🏆"}
-                                  </span>
+                                  <span />
                                   {r.name}
                                 </a>
                               </li>
@@ -757,9 +742,7 @@ export default function DashboardPage() {
                 {/* Strengths & Improvements */}
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="card">
-                    <h3 className="font-semibold mb-4 flex items-center gap-2">
-                      <span className="text-green-500">💪</span> Top Strengths
-                    </h3>
+                    <h3 className="font-semibold mb-4 flex items-center gap-2">Top Strengths</h3>
                     {strengthResult.topStrengths.length > 0 ? (
                       <ul className="space-y-2">
                         {strengthResult.topStrengths.map((s, i) => (
@@ -773,9 +756,7 @@ export default function DashboardPage() {
                     )}
                   </div>
                   <div className="card">
-                    <h3 className="font-semibold mb-4 flex items-center gap-2">
-                      <span className="text-yellow-500">📈</span> Improvements Needed
-                    </h3>
+                      <h3 className="font-semibold mb-4 flex items-center gap-2">Improvements Needed</h3>
                     <ul className="space-y-2">
                       {strengthResult.improvements.slice(0, 6).map((tip, i) => (
                         <li key={i} className="flex items-start gap-2 text-[var(--muted)]">
@@ -793,20 +774,18 @@ export default function DashboardPage() {
               <div className="space-y-6 animate-slide-in">
                 {/* Contact Info */}
                 <div className="card">
-                  <h3 className="font-semibold mb-4 flex items-center gap-2">
-                    <span>👤</span> Contact Information
-                  </h3>
+                  <h3 className="font-semibold mb-4 flex items-center gap-2">Contact Information</h3>
                   <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
                     {[
-                      { label: "Name", value: parsed.name, icon: "👤" },
-                      { label: "Email", value: parsed.email, icon: "✉️" },
-                      { label: "Phone", value: parsed.phone, icon: "📱" },
-                      { label: "Location", value: parsed.location, icon: "📍" },
-                      { label: "LinkedIn", value: parsed.linkedin, icon: "💼" },
-                      { label: "GitHub", value: parsed.github, icon: "💻" },
+                      { label: "Name", value: parsed.name },
+                      { label: "Email", value: parsed.email },
+                      { label: "Phone", value: parsed.phone },
+                      { label: "Location", value: parsed.location },
+                      { label: "LinkedIn", value: parsed.linkedin },
+                      { label: "GitHub", value: parsed.github },
                     ].map((item) => (
                       <div key={item.label} className="p-3 rounded-lg bg-[var(--background)]">
-                        <div className="text-xs text-[var(--muted)] mb-1">{item.icon} {item.label}</div>
+                        <div className="text-xs text-[var(--muted)] mb-1">{item.label}</div>
                         <div className="font-medium truncate">
                           {item.value || <span className="text-[var(--muted)]">Not found</span>}
                         </div>
@@ -818,18 +797,14 @@ export default function DashboardPage() {
                 {/* Summary */}
                 {parsed.summary && (
                   <div className="card">
-                    <h3 className="font-semibold mb-3 flex items-center gap-2">
-                      <span>📝</span> Professional Summary
-                    </h3>
+                    <h3 className="font-semibold mb-3 flex items-center gap-2">Professional Summary</h3>
                     <p className="text-[var(--muted)]">{parsed.summary}</p>
                   </div>
                 )}
 
                 {/* Skills */}
                 <div className="card">
-                  <h3 className="font-semibold mb-3 flex items-center gap-2">
-                    <span>🛠️</span> Skills ({parsed.skills.length})
-                  </h3>
+                  <h3 className="font-semibold mb-3 flex items-center gap-2">Skills ({parsed.skills.length})</h3>
                   <div className="flex flex-wrap gap-2">
                     {parsed.skills.map((skill) => (
                       <span key={skill} className="skill-tag skill-bonus">{skill}</span>
@@ -843,9 +818,7 @@ export default function DashboardPage() {
                 {/* Experience & Education */}
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="card">
-                    <h3 className="font-semibold mb-3 flex items-center gap-2">
-                      <span>💼</span> Experience ({parsed.experienceYears} years)
-                    </h3>
+                    <h3 className="font-semibold mb-3 flex items-center gap-2">Experience ({parsed.experienceYears} years)</h3>
                     {parsed.workExperience.length > 0 ? (
                       <ul className="space-y-3">
                         {parsed.workExperience.slice(0, 5).map((exp, i) => (
@@ -863,9 +836,7 @@ export default function DashboardPage() {
                     )}
                   </div>
                   <div className="card">
-                    <h3 className="font-semibold mb-3 flex items-center gap-2">
-                      <span>🎓</span> Education
-                    </h3>
+                    <h3 className="font-semibold mb-3 flex items-center gap-2">Education</h3>
                     {parsed.education.length > 0 ? (
                       <ul className="space-y-3">
                         {parsed.education.map((edu, i) => (
@@ -888,9 +859,7 @@ export default function DashboardPage() {
                   <div className="grid md:grid-cols-2 gap-6">
                     {parsed.certifications.length > 0 && (
                       <div className="card">
-                        <h3 className="font-semibold mb-3 flex items-center gap-2">
-                          <span>🏆</span> Certifications
-                        </h3>
+                          <h3 className="font-semibold mb-3 flex items-center gap-2">Certifications</h3>
                         <ul className="space-y-1">
                           {parsed.certifications.map((cert, i) => (
                             <li key={i} className="text-[var(--muted)]">• {cert}</li>
@@ -900,9 +869,7 @@ export default function DashboardPage() {
                     )}
                     {parsed.languages.length > 0 && (
                       <div className="card">
-                        <h3 className="font-semibold mb-3 flex items-center gap-2">
-                          <span>🌍</span> Languages
-                        </h3>
+                          <h3 className="font-semibold mb-3 flex items-center gap-2">Languages</h3>
                         <div className="flex flex-wrap gap-2">
                           {parsed.languages.map((lang) => (
                             <span key={lang} className="skill-tag skill-bonus">{lang}</span>
@@ -920,7 +887,7 @@ export default function DashboardPage() {
         {/* Empty State */}
         {!matchResult && !parsed && !strengthResult && (
           <div className="text-center py-16 animate-fade-in">
-            <div className="text-6xl mb-4">🚀</div>
+            <div className="text-6xl mb-4"></div>
             <h3 className="text-2xl font-semibold mb-2">Ready to Analyze</h3>
             <p className="text-[var(--muted)] mb-6">
               Paste a resume and job description above, then click Match to see the magic!
