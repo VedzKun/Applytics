@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fafbfc;
-  --foreground: #1a1a2e;
-  --primary: #6366f1;
-  --primary-dark: #4f46e5;
-  --primary-light: #818cf8;
-  --secondary: #10b981;
+  --background: #f3f4f6;
+  --foreground: #0f1724;
+  --primary: #4f46e5;
+  --primary-dark: #4338ca;
+  --primary-light: #7c83f7;
+  --secondary: #0ea5a4;
   --accent: #f59e0b;
-  --danger: #ef4444;
+  --danger: #dc2626;
   --card-bg: #ffffff;
-  --border: #e5e7eb;
+  --border: #cbd5e1;
   --muted: #6b7280;
 }
 
@@ -117,6 +117,31 @@ body {
   background-size: 400% 400%;
   animation: gradient 8s ease infinite;
 }
+
+/* Brutalist adjustments */
+.card {
+  border-radius: 8px;
+  border: 2px solid var(--border);
+}
+
+.skill-tag { border-radius: 6px; }
+
+/* Smaller navbar CTA */
+.btn-sm { padding: 8px 14px; font-size: 14px; border-radius: 8px; }
+
+/* Feature card entrance */
+@keyframes popIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.feature-card { animation: popIn 420ms cubic-bezier(.2,.9,.2,1) both; border-radius: 6px; border: 2px solid var(--border); }
+
+/* Result marker replacing arrows */
+.result-marker { display:inline-block; width:10px; height:10px; background:var(--foreground); margin-right:8px; border-radius:2px; }
+
+/* Tighter, more brutalist buttons */
+.btn { padding: 10px 18px; border-radius: 8px; }
+
 
 /* Card styles */
 .card {
