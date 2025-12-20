@@ -353,7 +353,7 @@ export default function DashboardPage() {
           <div className="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 animate-fade-in">
             <div className="flex items-center gap-2">
               <span>{error}</span>
-              <button onClick={() => setError(null)} className="ml-auto text-red-400 hover:text-red-600">✕</button>
+              <button onClick={() => setError(null)} className="ml-auto text-red-400 hover:text-red-600">Close</button>
             </div>
           </div>
         )}
@@ -623,8 +623,9 @@ export default function DashboardPage() {
                 <div className="grid md:grid-cols-3 gap-6">
                   <div className="card">
                     <h3 className="font-semibold mb-3 flex items-center gap-2">
-                      <span className="text-green-500">✓</span> Matched Skills
-                    </h3>
+                        <span className="inline-block w-3 h-3 bg-green-500 rounded-sm mr-1" aria-hidden="true" />
+                        Matched Skills
+                      </h3>
                     <div className="flex flex-wrap gap-2">
                       {matchResult.matchedSkills.length > 0 ? (
                         matchResult.matchedSkills.map((skill) => (
@@ -637,7 +638,8 @@ export default function DashboardPage() {
                   </div>
                   <div className="card">
                     <h3 className="font-semibold mb-3 flex items-center gap-2">
-                      <span className="text-red-500">✗</span> Missing Skills
+                      <span className="inline-block w-3 h-3 bg-red-500 rounded-sm mr-1" aria-hidden="true" />
+                      Missing Skills
                     </h3>
                     <div className="flex flex-wrap gap-2">
                       {matchResult.missingSkills.length > 0 ? (
@@ -651,7 +653,8 @@ export default function DashboardPage() {
                   </div>
                   <div className="card">
                     <h3 className="font-semibold mb-3 flex items-center gap-2">
-                      <span className="text-blue-500">★</span> Bonus Skills
+                      <span className="inline-block w-3 h-3 bg-blue-500 rounded-sm mr-1" aria-hidden="true" />
+                      Bonus Skills
                     </h3>
                     <div className="flex flex-wrap gap-2">
                       {matchResult.bonusSkills.slice(0, 10).map((skill) => (
@@ -671,7 +674,7 @@ export default function DashboardPage() {
                     <ul className="space-y-2">
                       {matchResult.recommendations.map((rec, i) => (
                         <li key={i} className="flex items-start gap-2 text-[var(--muted)]">
-                          <span className="text-[var(--primary)]">→</span>
+                          <span className="result-marker" aria-hidden="true" />
                           <span>{rec}</span>
                         </li>
                       ))}
@@ -683,7 +686,8 @@ export default function DashboardPage() {
                 {matchResult.learningResources.length > 0 && (
                   <div className="card">
                     <h3 className="font-semibold mb-4 flex items-center gap-2">
-                      <span>📚</span> Learning Resources for Missing Skills
+                      <span className="inline-block w-3 h-3 bg-[var(--muted)] rounded-sm mr-1" aria-hidden="true" />
+                      Learning Resources for Missing Skills
                     </h3>
                     <div className="grid md:grid-cols-2 gap-4">
                       {matchResult.learningResources.slice(0, 4).map((lr) => (
@@ -760,8 +764,9 @@ export default function DashboardPage() {
                     {strengthResult.topStrengths.length > 0 ? (
                       <ul className="space-y-2">
                         {strengthResult.topStrengths.map((s, i) => (
-                          <li key={i} className="flex items-center gap-2 text-green-600">
-                            <span>✓</span> {s}
+                          <li key={i} className="flex items-center gap-2">
+                            <span className="inline-block w-3 h-3 bg-green-600 rounded-sm" aria-hidden="true" />
+                            <span>{s}</span>
                           </li>
                         ))}
                       </ul>
@@ -774,7 +779,8 @@ export default function DashboardPage() {
                     <ul className="space-y-2">
                       {strengthResult.improvements.slice(0, 6).map((tip, i) => (
                         <li key={i} className="flex items-start gap-2 text-[var(--muted)]">
-                          <span className="text-yellow-500">→</span> {tip}
+                          <span className="result-marker" aria-hidden="true" />
+                          <span>{tip}</span>
                         </li>
                       ))}
                     </ul>

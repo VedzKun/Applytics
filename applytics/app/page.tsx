@@ -31,13 +31,13 @@ export default function Home() {
             <Link href="#how-it-works" className="text-[var(--muted)] hover:text-[var(--foreground)] transition">
               How it works
             </Link>
-            <Link href="/dashboard" className="btn btn-primary">
+            <Link href="/dashboard" className="btn btn-primary btn-sm">
               Try Now
             </Link>
           </div>
 
           <div className="md:hidden">
-            <Link href="/dashboard" className="btn btn-primary px-3 py-2">
+            <Link href="/dashboard" className="btn btn-primary btn-sm px-3 py-2">
               Try
             </Link>
           </div>
@@ -47,10 +47,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-6">
         <div className="max-w-7xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] text-sm font-medium mb-8 animate-fade-in">
-            <span className="w-2 h-2 rounded-full bg-[var(--secondary)] animate-pulse"></span>
-            AI-Powered Resume Intelligence
-          </div>
+          
           
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight animate-fade-in">
             Match <span className="gradient-text">Talent</span> to<br />
@@ -206,16 +203,25 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 border-t border-[var(--border)]">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center">
-              <span className="text-white font-bold">A</span>
-            </div>
-            <span className="font-semibold">Applytics</span>
+      <footer className="py-16 px-6 bg-black text-white">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-3xl md:text-5xl font-semibold mb-6">
+            We're here to help! <span className="text-[var(--primary)]">Contact us</span>
+          </h2>
+
+          <div className="flex items-center justify-center gap-6 mb-8">
+            <a href="#" aria-label="X" className="w-10 h-10 rounded-full bg-white/6 hover:bg-white/12 flex items-center justify-center text-white text-sm">X</a>
+            <a href="#" aria-label="Facebook" className="w-10 h-10 rounded-full bg-white/6 hover:bg-white/12 flex items-center justify-center text-white text-sm">f</a>
+            <a href="#" aria-label="LinkedIn" className="w-10 h-10 rounded-full bg-white/6 hover:bg-white/12 flex items-center justify-center text-white text-sm">in</a>
+            <a href="#" aria-label="Instagram" className="w-10 h-10 rounded-full bg-white/6 hover:bg-white/12 flex items-center justify-center text-white text-sm">ig</a>
           </div>
-          <div className="text-[var(--muted)] text-sm">
-            © 2024 Applytics. Intelligent Resume Matching Platform.
+
+          <hr className="border-t border-[var(--border)] opacity-20 my-8" />
+
+          <div className="mt-8">
+            <div className="text-[var(--primary)] font-extrabold mx-auto" style={{fontSize: 'clamp(48px, 12vw, 200px)', lineHeight: 0.9}}>
+              Applytics
+            </div>
           </div>
         </div>
       </footer>

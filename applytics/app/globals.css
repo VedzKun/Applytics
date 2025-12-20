@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f3f4f6;
-  --foreground: #0f1724;
-  --primary: #4f46e5;
-  --primary-dark: #4338ca;
-  --primary-light: #7c83f7;
-  --secondary: #0ea5a4;
-  --accent: #f59e0b;
-  --danger: #dc2626;
-  --card-bg: #ffffff;
-  --border: #cbd5e1;
-  --muted: #6b7280;
+  --background: #000000;
+  --foreground: #ffffff;
+  --primary: #3b82f6; /* blue-500 */
+  --primary-dark: #2563eb; /* blue-600 */
+  --primary-light: #60a5fa; /* blue-400 */
+  --secondary: #10b981; /* green accent for small indicators */
+  --accent: #06b6d4; /* cyan accent */
+  --danger: #ef4444;
+  --card-bg: #07070a; /* very dark card background */
+  --border: #0f1724; /* dark border */
+  --muted: #9ca3af; /* muted light gray on dark bg */
 }
 
 @theme inline {
@@ -25,10 +25,10 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0f0f1a;
-    --foreground: #f0f0f5;
-    --card-bg: #1a1a2e;
-    --border: #2d2d44;
+    --background: #000000;
+    --foreground: #ffffff;
+    --card-bg: #07070a;
+    --border: #0f1724;
     --muted: #9ca3af;
   }
 }
@@ -102,18 +102,18 @@ body {
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 60%, var(--primary-dark) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-bg {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 60%);
 }
 
 .gradient-bg-animated {
-  background: linear-gradient(-45deg, #6366f1, #8b5cf6, #10b981, #06b6d4);
+  background: linear-gradient(-45deg, #1e3a8a, #3b82f6, #60a5fa, #06b6d4);
   background-size: 400% 400%;
   animation: gradient 8s ease infinite;
 }
@@ -121,7 +121,7 @@ body {
 /* Brutalist adjustments */
 .card {
   border-radius: 8px;
-  border: 2px solid var(--border);
+  border: 2px solid rgba(255,255,255,0.04);
 }
 
 .skill-tag { border-radius: 6px; }
@@ -137,7 +137,7 @@ body {
 .feature-card { animation: popIn 420ms cubic-bezier(.2,.9,.2,1) both; border-radius: 6px; border: 2px solid var(--border); }
 
 /* Result marker replacing arrows */
-.result-marker { display:inline-block; width:10px; height:10px; background:var(--foreground); margin-right:8px; border-radius:2px; }
+.result-marker { display:inline-block; width:10px; height:10px; background:var(--primary); margin-right:8px; border-radius:2px; }
 
 /* Tighter, more brutalist buttons */
 .btn { padding: 10px 18px; border-radius: 8px; }
@@ -146,14 +146,14 @@ body {
 /* Card styles */
 .card {
   background: var(--card-bg);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255,255,255,0.04);
   border-radius: 16px;
   padding: 24px;
   transition: all 0.3s ease;
 }
 
 .card:hover {
-  box-shadow: 0 10px 40px rgba(99, 102, 241, 0.1);
+  box-shadow: 0 10px 40px rgba(59,130,246,0.12);
   transform: translateY(-2px);
 }
 
@@ -179,7 +179,7 @@ body {
 .btn-primary:hover {
   background: var(--primary-dark);
   transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 6px 30px rgba(59,130,246,0.25);
 }
 
 .btn-secondary {
@@ -203,7 +203,7 @@ body {
 .input, .textarea {
   width: 100%;
   padding: 14px 18px;
-  border: 2px solid var(--border);
+  border: 2px solid rgba(255,255,255,0.04);
   border-radius: 12px;
   background: var(--card-bg);
   color: var(--foreground);
@@ -214,7 +214,7 @@ body {
 .input:focus, .textarea:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+  box-shadow: 0 0 0 6px rgba(59,130,246,0.08);
 }
 
 .textarea {
@@ -266,21 +266,21 @@ body {
 }
 
 .skill-matched {
-  background: rgba(16, 185, 129, 0.15);
-  color: #059669;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.18);
 }
 
 .skill-missing {
-  background: rgba(239, 68, 68, 0.1);
-  color: #dc2626;
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: rgba(239, 68, 68, 0.08);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.14);
 }
 
 .skill-bonus {
-  background: rgba(99, 102, 241, 0.1);
+  background: rgba(59,130,246,0.08);
   color: var(--primary);
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(59,130,246,0.12);
 }
 
 /* Glass effect */
