@@ -3,6 +3,9 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
 
+// Force dynamic rendering to prevent prerendering issues with localStorage
+export const dynamic = 'force-dynamic';
+
 type ParsedResume = {
   name?: string;
   email?: string;
