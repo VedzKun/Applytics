@@ -5,39 +5,39 @@ export default function Home() {
     <div className="min-h-screen">
       {/* Navigation */}
       <nav
-        className="fixed z-50 glass border-[var(--border)]"
+        className="fixed z-50 glass border-4 border-[var(--border)]"
         style={{
           left: "50%",
-          top: "24px",
+          top: "20px",
           transform: "translateX(-50%)",
           width: "min(96%, 1100px)",
           padding: "8px 18px",
           borderRadius: "9999px",
-          boxShadow: "0 10px 30px rgba(2,6,23,0.12)",
+          boxShadow: "0 8px 24px rgba(2,6,23,0.12)",
           backdropFilter: "blur(8px)",
           WebkitBackdropFilter: "blur(8px)",
         }}
       >
         <div className="max-w-7xl mx-auto px-2 py-0 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] flex items-center justify-center text-white font-bold">AT</div>
-            <span className="text-xl font-bold">Applytics</span>
+            <div className="w-10 h-10 bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] flex items-center justify-center text-white font-black">AT</div>
+            <span className="text-xl font-black">Applytics</span>
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
-            <Link href="#features" className="text-[var(--muted)] hover:text-[var(--foreground)] transition">
+            <Link href="#features" className="text-[var(--muted)] hover:text-[var(--foreground)] transition text-sm font-black uppercase tracking-wider">
               Features
             </Link>
-            <Link href="#how-it-works" className="text-[var(--muted)] hover:text-[var(--foreground)] transition">
+            <Link href="#how-it-works" className="text-[var(--muted)] hover:text-[var(--foreground)] transition text-sm font-black uppercase tracking-wider">
               How it works
             </Link>
-            <Link href="/dashboard" className="btn btn-primary btn-sm">
+            <Link href="/dashboard" className="border-2 border-[var(--primary)] bg-[var(--primary)] text-white font-black uppercase tracking-wider text-xs px-4 py-2 transition-all hover:bg-[var(--primary-dark)] hover:border-[var(--primary-dark)]">
               Try Now
             </Link>
           </div>
 
           <div className="md:hidden">
-            <Link href="/dashboard" className="btn btn-primary btn-sm px-3 py-2">
+            <Link href="/dashboard" className="border-2 border-[var(--primary)] bg-[var(--primary)] text-white font-black uppercase tracking-wider text-xs px-3 py-2 transition-all hover:bg-[var(--primary-dark)]">
               Try
             </Link>
           </div>
@@ -191,10 +191,10 @@ export default function Home() {
       {/* CTA Section */}
       <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="card gradient-bg-animated text-white text-center py-16 px-8">
-            <h2 className="text-4xl font-bold mb-4 text-[var(--primary)]">Ready to Transform Your Hiring?</h2>
-            <p className="text-xl text-white/90 mb-8">Start matching candidates to opportunities in seconds.</p>
-            <Link href="/dashboard" className="btn bg-white text-[var(--primary)] text-lg px-8 py-4 hover:bg-gray-100">
+          <div className="border-4 border-[var(--border)] bg-[var(--card-bg)] text-center py-16 px-8">
+            <h2 className="text-3xl md:text-5xl font-black mb-4 uppercase tracking-tight">Ready to Transform Your Hiring?</h2>
+            <p className="text-base text-[var(--muted)] mb-8 font-mono">Start matching candidates to opportunities in seconds.</p>
+            <Link href="/dashboard" className="border-4 border-white bg-white text-[var(--background)] font-black uppercase tracking-wider text-sm px-8 py-4 inline-block transition-all hover:bg-[var(--primary)] hover:text-white hover:border-[var(--primary)]">
               Get Started Free →
             </Link>
           </div>
@@ -203,27 +203,27 @@ export default function Home() {
 
       {/* Divider between CTA and footer */}
       <div className="max-w-4xl mx-auto px-6">
-        <hr className="border-t border-[var(--border)] opacity-30 my-12" />
+        <hr className="border-t-4 border-[var(--border)] my-12" />
       </div>
 
       {/* Footer */}
       <footer className="py-16 px-6 bg-black text-white mt-24">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl md:text-5xl font-semibold mb-6">
-            We're here to help! <span className="text-[var(--primary-dark)]">Contact us</span>
+          <h2 className="text-2xl md:text-4xl font-black mb-6 uppercase tracking-tight">
+            We're here to help! <span className="text-[var(--primary)]">Contact us</span>
           </h2>
 
           <div className="flex items-center justify-center gap-6 mb-8">
-            <a href="#" aria-label="X" className="w-10 h-10 rounded-full bg-white/6 hover:bg-white/12 flex items-center justify-center text-white text-sm">X</a>
-            <a href="#" aria-label="Facebook" className="w-10 h-10 rounded-full bg-white/6 hover:bg-white/12 flex items-center justify-center text-white text-sm">f</a>
-            <a href="#" aria-label="LinkedIn" className="w-10 h-10 rounded-full bg-white/6 hover:bg-white/12 flex items-center justify-center text-white text-sm">in</a>
-            <a href="#" aria-label="Instagram" className="w-10 h-10 rounded-full bg-white/6 hover:bg-white/12 flex items-center justify-center text-white text-sm">ig</a>
+            <a href="#" aria-label="X" className="w-10 h-10 border-2 border-white/20 hover:border-[var(--primary)] flex items-center justify-center text-white text-sm font-black transition-all">X</a>
+            <a href="#" aria-label="Facebook" className="w-10 h-10 border-2 border-white/20 hover:border-[var(--primary)] flex items-center justify-center text-white text-sm font-black transition-all">f</a>
+            <a href="#" aria-label="LinkedIn" className="w-10 h-10 border-2 border-white/20 hover:border-[var(--primary)] flex items-center justify-center text-white text-sm font-black transition-all">in</a>
+            <a href="#" aria-label="Instagram" className="w-10 h-10 border-2 border-white/20 hover:border-[var(--primary)] flex items-center justify-center text-white text-sm font-black transition-all">ig</a>
           </div>
 
-          <hr className="border-t border-[var(--border)] opacity-20 my-8" />
+          <hr className="border-t-4 border-[var(--border)] my-8" />
 
           <div className="mt-8">
-            <div className="text-[var(--primary-dark)] font-extrabold mx-auto" style={{fontSize: 'clamp(48px, 12vw, 200px)', lineHeight: 0.9}}>
+            <div className="text-[var(--primary)] font-black mx-auto uppercase tracking-tighter" style={{fontSize: 'clamp(48px, 12vw, 200px)', lineHeight: 0.9}}>
               Applytics
             </div>
           </div>
