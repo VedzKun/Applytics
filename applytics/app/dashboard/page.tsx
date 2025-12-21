@@ -123,6 +123,10 @@ export default function DashboardPage() {
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // New functional features
+  const [showCopyNotification, setShowCopyNotification] = useState(false);
+  const [savedAnalyses, setSavedAnalyses] = useState<Array<{id: string; name: string; date: string; result: any}>>([]);
+
   const loadSampleData = () => {
     setResumeText(SAMPLE_RESUME);
     setJobDesc(SAMPLE_JOB);
@@ -312,8 +316,103 @@ export default function DashboardPage() {
     return "text-red-500";
   };
 
+  // Copy results to clipboard
+  const copyToClipboard = async () => {
+    const result = matchResult || strengthResult || parsed;
+    if (!result) return;
+    
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(result, null, 2));
+      setShowCopyNotification(true);
+      setTimeout(() => setShowCopyNotification(false), 2000);
+    } catch (err) {
+      setError("Failed to copy to clipboard");
+    }
+  };
+
+  // Export results as JSON
+  const exportAsJSON = () => {
+    const result = matchResult || strengthResult || parsed;
+    if (!result) return;
+
+    const dataStr = JSON.stringify(result, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `applytics-results-${new Date().getTime()}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // Save current analysis
+  const saveAnalysis = () => {
+    const result = matchResult || strengthResult || parsed;
+    if (!result) return;
+
+    const candidateName = parsed?.name || "Unknown";
+    const newAnalysis = {
+      id: Math.random().toString(36).substring(2, 12),
+      name: candidateName,
+      date: new Date().toLocaleString(),
+      result: { matchResult, strengthResult, parsed, resumeText: resumeText.slice(0, 200) }
+    };
+
+    const updated = [newAnalysis, ...savedAnalyses].slice(0, 10); // Keep last 10
+    setSavedAnalyses(updated);
+    localStorage.setItem('applytics-history', JSON.stringify(updated));
+    setError(null);
+  };
+
+  // Load saved analyses on mount
+  useState(() => {
+    const saved = localStorage.getItem('applytics-history');
+    if (saved) {
+      try {
+        setSavedAnalyses(JSON.parse(saved));
+      } catch (e) {
+        // ignore parse errors
+      }
+    }
+  });
+
+  // Load a saved analysis
+  const loadSavedAnalysis = (analysis: any) => {
+    if (analysis.result.resumeText) {
+      setResumeText(analysis.result.resumeText);
+    }
+    if (analysis.result.matchResult) {
+      setMatchResult(analysis.result.matchResult);
+      setActiveTab("match");
+    }
+    if (analysis.result.strengthResult) {
+      setStrengthResult(analysis.result.strengthResult);
+    }
+    if (analysis.result.parsed) {
+      setParsed(analysis.result.parsed);
+    }
+  };
+
+  // Delete saved analysis
+  const deleteSavedAnalysis = (id: string) => {
+    const updated = savedAnalyses.filter(a => a.id !== id);
+    setSavedAnalyses(updated);
+    localStorage.setItem('applytics-history', JSON.stringify(updated));
+  };
+
+  // Print results
+  const printResults = () => {
+    window.print();
+  };
+
   return (
     <div className="min-h-screen">
+      {/* Animated Background Elements */}
+      <div className="gradient-orb orb-1"></div>
+      <div className="gradient-orb orb-2"></div>
+      <div className="gradient-orb orb-3"></div>
+      <div className="scanlines"></div>
+
       {/* Header */}
       <header
         className="z-50 glass border-[var(--border)]"
@@ -340,6 +439,25 @@ export default function DashboardPage() {
             <button onClick={loadSampleData} className="btn btn-secondary text-sm py-2 px-4">
               Load Sample
             </button>
+            {savedAnalyses.length > 0 && (
+              <div className="relative group">
+                <button className="text-[var(--muted)] hover:text-[var(--foreground)] text-sm font-black uppercase tracking-wider">
+                  History ({savedAnalyses.length})
+                </button>
+                <div className="absolute right-0 top-full mt-2 w-72 bg-[var(--card-bg)] border-4 border-[var(--border)] p-2 hidden group-hover:block z-50">
+                  <div className="text-xs font-black uppercase tracking-wider mb-2 px-2 text-[var(--muted)]">Recent Analyses</div>
+                  {savedAnalyses.slice(0, 5).map(analysis => (
+                    <div key={analysis.id} className="flex items-center justify-between p-2 hover:bg-[var(--background)] border-2 border-transparent hover:border-[var(--primary)] mb-1">
+                      <button onClick={() => loadSavedAnalysis(analysis)} className="flex-1 text-left">
+                        <div className="text-xs font-black uppercase">{analysis.name}</div>
+                        <div className="text-xs text-[var(--muted)] font-mono">{analysis.date}</div>
+                      </button>
+                      <button onClick={() => deleteSavedAnalysis(analysis.id)} className="text-red-500 text-xs ml-2">✕</button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
             <button onClick={clearAll} className="text-[var(--muted)] hover:text-[var(--foreground)] text-sm">
               Clear All
             </button>
@@ -348,6 +466,13 @@ export default function DashboardPage() {
       </header>
 
       <main className="max-w-7xl mx-auto px-6 pt-36 pb-8">
+        {/* Copy Notification */}
+        {showCopyNotification && (
+          <div className="fixed top-24 right-6 z-50 bg-[var(--primary)] text-white px-6 py-3 border-4 border-[var(--primary)] animate-fade-in">
+            <span className="font-black uppercase tracking-wider text-xs">✓ Copied to Clipboard</span>
+          </div>
+        )}
+
         {/* Error Banner */}
         {error && (
           <div className="mb-6 p-4 border-4 border-[var(--danger)] bg-[var(--danger)]/10 animate-fade-in">
@@ -582,9 +707,9 @@ export default function DashboardPage() {
             {/* Match Results Tab */}
             {activeTab === "match" && matchResult && (
               <div className="space-y-6 animate-slide-in">
-                {/* Header Card */}
+                {/* Header Card with Actions */}
                 <div className="border-4 border-[var(--border)] p-6 bg-[var(--card-bg)]">
-                  <div className="flex items-start justify-between">
+                  <div className="flex items-start justify-between mb-4">
                     <div>
                       <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight mb-1">RESUME ANALYSIS</h1>
                       <p className="text-sm text-[var(--muted)] uppercase tracking-wider font-mono">CANDIDATE EVALUATION SYSTEM</p>
@@ -592,6 +717,34 @@ export default function DashboardPage() {
                     <div className="text-xs text-[var(--muted)] font-mono uppercase tracking-wider">
                       ID: {Math.random().toString(36).substring(2, 12).toUpperCase()}
                     </div>
+                  </div>
+                  
+                  {/* Action Buttons */}
+                  <div className="flex flex-wrap gap-2 pt-4 border-t-2 border-[var(--border)]">
+                    <button 
+                      onClick={saveAnalysis}
+                      className="border-2 border-[var(--primary)] bg-[var(--primary)] text-white font-black uppercase tracking-wider text-xs px-4 py-2 hover:bg-[var(--primary-dark)] transition-colors"
+                    >
+                      💾 Save
+                    </button>
+                    <button 
+                      onClick={copyToClipboard}
+                      className="border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-black uppercase tracking-wider text-xs px-4 py-2 hover:border-[var(--primary)] transition-colors"
+                    >
+                      📋 Copy
+                    </button>
+                    <button 
+                      onClick={exportAsJSON}
+                      className="border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-black uppercase tracking-wider text-xs px-4 py-2 hover:border-[var(--primary)] transition-colors"
+                    >
+                      📥 Export JSON
+                    </button>
+                    <button 
+                      onClick={printResults}
+                      className="border-2 border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-black uppercase tracking-wider text-xs px-4 py-2 hover:border-[var(--primary)] transition-colors"
+                    >
+                      🖨️ Print
+                    </button>
                   </div>
                 </div>
 

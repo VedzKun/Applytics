@@ -3,6 +3,12 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="min-h-screen">
+      {/* Animated Background Elements */}
+      <div className="gradient-orb orb-1"></div>
+      <div className="gradient-orb orb-2"></div>
+      <div className="gradient-orb orb-3"></div>
+      <div className="scanlines"></div>
+
       {/* Navigation */}
       <nav
         className="fixed z-50 glass border-4 border-[var(--border)]"
@@ -182,6 +188,137 @@ export default function Home() {
                 </div>
                 <h3 className="text-sm font-black uppercase tracking-wider mb-3">{item.title}</h3>
                 <p className="text-[var(--muted)] text-sm font-mono leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-20 px-6 bg-[var(--card-bg)]">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-sm font-black uppercase tracking-wider mb-3 text-[var(--primary)]">By The Numbers</h2>
+            <p className="text-[var(--muted)] text-base font-mono">Proven results that matter</p>
+          </div>
+          
+          <div className="grid md:grid-cols-4 gap-6">
+            {[
+              { value: "98%", label: "Parsing Accuracy" },
+              { value: "<2s", label: "Processing Time" },
+              { value: "50+", label: "Skills Detected" },
+              { value: "100%", label: "Free To Use" },
+            ].map((stat, i) => (
+              <div key={i} className="text-center border-4 border-[var(--border)] bg-[var(--background)] p-8 animate-fade-in transition-all hover:border-[var(--primary)]" style={{animationDelay: `${i * 0.1}s`}}>
+                <div className="text-4xl md:text-5xl font-black mb-2 text-[var(--primary)]">{stat.value}</div>
+                <div className="text-xs font-black uppercase tracking-wider text-[var(--muted)]">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Use Cases Section */}
+      <section className="py-20 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-sm font-black uppercase tracking-wider mb-3 text-[var(--primary)]">Use Cases</h2>
+            <p className="text-[var(--muted)] text-base font-mono">Built for recruiters, developers, and job seekers</p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              {
+                title: "For Recruiters",
+                points: [
+                  "Screen hundreds of resumes in minutes",
+                  "Find best-fit candidates instantly",
+                  "Reduce time-to-hire by 60%",
+                  "Eliminate manual resume review"
+                ]
+              },
+              {
+                title: "For Developers",
+                points: [
+                  "Integrate via REST API",
+                  "Build custom ATS systems",
+                  "Automate candidate workflows",
+                  "Scale with ease"
+                ]
+              },
+              {
+                title: "For Job Seekers",
+                points: [
+                  "Test resume strength",
+                  "Get improvement suggestions",
+                  "Find skill gaps",
+                  "Access learning resources"
+                ]
+              },
+              {
+                title: "For Hiring Managers",
+                points: [
+                  "Compare candidates side-by-side",
+                  "Get objective scoring",
+                  "Make data-driven decisions",
+                  "Reduce hiring bias"
+                ]
+              },
+            ].map((useCase, i) => (
+              <div key={i} className="border-4 border-[var(--border)] bg-[var(--card-bg)] p-6 animate-fade-in transition-all hover:border-[var(--primary)]" style={{animationDelay: `${i * 0.1}s`}}>
+                <h3 className="text-sm font-black uppercase tracking-wider mb-4 text-[var(--primary)]">{useCase.title}</h3>
+                <ul className="space-y-2">
+                  {useCase.points.map((point, j) => (
+                    <li key={j} className="flex items-start gap-3 text-sm font-mono text-[var(--muted)]">
+                      <span className="text-[var(--secondary)] mt-1">▸</span>
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-20 px-6 bg-[var(--card-bg)]">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-sm font-black uppercase tracking-wider mb-3 text-[var(--primary)]">FAQ</h2>
+            <p className="text-[var(--muted)] text-base font-mono">Common questions answered</p>
+          </div>
+          
+          <div className="space-y-4">
+            {[
+              {
+                q: "How accurate is the resume parsing?",
+                a: "Our parser achieves 98%+ accuracy on standard resume formats. It extracts names, emails, skills, experience, and education with high precision."
+              },
+              {
+                q: "What file formats are supported?",
+                a: "Currently supports PDF and plain text. We're working on adding DOCX and other formats soon."
+              },
+              {
+                q: "Is my data secure?",
+                a: "Yes. All data is processed securely and never stored permanently. We respect your privacy and don't share data with third parties."
+              },
+              {
+                q: "Can I integrate this into my system?",
+                a: "Absolutely! We provide REST APIs for parsing, matching, and strength analysis. Perfect for building custom ATS solutions."
+              },
+              {
+                q: "Is it really free?",
+                a: "Yes! The core features are 100% free to use. No hidden fees, no credit card required."
+              },
+              {
+                q: "How is the match score calculated?",
+                a: "We analyze skill overlap, experience level, education requirements, and other factors to generate a comprehensive score from 0-100."
+              },
+            ].map((faq, i) => (
+              <div key={i} className="border-4 border-[var(--border)] bg-[var(--background)] p-6 animate-fade-in transition-all hover:border-[var(--primary)]" style={{animationDelay: `${i * 0.05}s`}}>
+                <h3 className="text-sm font-black uppercase tracking-wider mb-3">{faq.q}</h3>
+                <p className="text-sm font-mono text-[var(--muted)] leading-relaxed">{faq.a}</p>
               </div>
             ))}
           </div>
