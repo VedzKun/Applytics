@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
 
 type ParsedResume = {
@@ -153,6 +153,20 @@ export default function DashboardPage() {
   // New functional features
   const [showCopyNotification, setShowCopyNotification] = useState(false);
   const [savedAnalyses, setSavedAnalyses] = useState<Array<{id: string; name: string; date: string; result: any}>>([]);
+
+  // Load saved analyses from localStorage on client side only
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('applytics-history');
+        if (saved) {
+          setSavedAnalyses(JSON.parse(saved));
+        }
+      } catch (err) {
+        console.error('Failed to load saved analyses:', err);
+      }
+    }
+  }, []);
 
   const loadSampleData = () => {
     setResumeText(SAMPLE_RESUME);
@@ -769,21 +783,11 @@ export default function DashboardPage() {
 
     const updated = [newAnalysis, ...savedAnalyses].slice(0, 10); // Keep last 10
     setSavedAnalyses(updated);
-    localStorage.setItem('applytics-history', JSON.stringify(updated));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('applytics-history', JSON.stringify(updated));
+    }
     setError(null);
   };
-
-  // Load saved analyses on mount
-  useState(() => {
-    const saved = localStorage.getItem('applytics-history');
-    if (saved) {
-      try {
-        setSavedAnalyses(JSON.parse(saved));
-      } catch (e) {
-        // ignore parse errors
-      }
-    }
-  });
 
   // Load a saved analysis
   const loadSavedAnalysis = (analysis: any) => {
@@ -806,7 +810,9 @@ export default function DashboardPage() {
   const deleteSavedAnalysis = (id: string) => {
     const updated = savedAnalyses.filter(a => a.id !== id);
     setSavedAnalyses(updated);
-    localStorage.setItem('applytics-history', JSON.stringify(updated));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('applytics-history', JSON.stringify(updated));
+    }
   };
 
   // Print results
