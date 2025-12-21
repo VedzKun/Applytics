@@ -49,52 +49,52 @@ export default function Home() {
         <div className="max-w-7xl mx-auto text-center">
           
           
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight animate-fade-in">
+          <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight animate-fade-in uppercase tracking-tight">
             Match <span className="gradient-text">Talent</span> to<br />
             Opportunity Instantly
           </h1>
           
-          <p className="text-xl text-[var(--muted)] max-w-2xl mx-auto mb-10 animate-fade-in" style={{animationDelay: '0.1s'}}>
+          <p className="text-base md:text-lg text-[var(--muted)] max-w-2xl mx-auto mb-10 animate-fade-in font-mono leading-relaxed" style={{animationDelay: '0.1s'}}>
             Parse resumes intelligently, extract key skills, and match candidates to job 
             descriptions with our advanced matching algorithm. Get actionable insights in seconds.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in" style={{animationDelay: '0.2s'}}>
-            <Link href="/dashboard" className="btn btn-primary text-lg px-8 py-4">
+            <Link href="/dashboard" className="border-4 border-[var(--primary)] bg-[var(--primary)] text-white font-black uppercase tracking-wider text-sm px-8 py-4 transition-all hover:bg-[var(--primary-dark)] hover:border-[var(--primary-dark)]">
               Start Matching Free
             </Link>
-            <Link href="#how-it-works" className="btn btn-secondary text-lg px-8 py-4">
+            <Link href="#how-it-works" className="border-4 border-[var(--primary)] bg-transparent text-[var(--primary)] font-black uppercase tracking-wider text-sm px-8 py-4 transition-all hover:bg-[var(--primary)] hover:text-white">
               See How It Works
             </Link>
           </div>
 
           {/* Hero Visual */}
           <div className="mt-16 relative animate-fade-in" style={{animationDelay: '0.3s'}}>
-            <div className="absolute inset-0 gradient-bg-animated opacity-20 blur-3xl rounded-full"></div>
-            <div className="relative card max-w-4xl mx-auto overflow-hidden">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                <div className="w-3 h-3 rounded-full bg-green-400"></div>
+            <div className="relative border-4 border-[var(--border)] bg-[var(--background)] max-w-4xl mx-auto overflow-hidden">
+              <div className="flex items-center gap-2 mb-4 p-4 bg-[var(--card-bg)] border-b-4 border-[var(--border)]">
+                <div className="w-3 h-3 bg-red-400"></div>
+                <div className="w-3 h-3 bg-yellow-400"></div>
+                <div className="w-3 h-3 bg-green-400"></div>
+                <span className="ml-2 text-xs font-black uppercase tracking-wider text-[var(--muted)]">Demo</span>
               </div>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="text-left">
-                  <div className="text-sm text-[var(--muted)] mb-2">Resume Input</div>
-                  <div className="bg-[var(--background)] rounded-lg p-4 text-sm font-mono">
+              <div className="grid md:grid-cols-2 gap-0">
+                <div className="text-left p-6 border-r-4 border-[var(--border)]">
+                  <div className="text-xs font-black uppercase tracking-wider mb-3 text-[var(--primary)]">Resume Input</div>
+                  <div className="bg-[var(--card-bg)] border-2 border-[var(--border)] p-4 text-sm font-mono">
                     <div className="text-[var(--primary)]">John Smith</div>
                     <div className="text-[var(--muted)]">john@email.com</div>
                     <div className="mt-2 text-[var(--secondary)]">Skills: React, Node.js, AWS</div>
                     <div className="text-[var(--muted)]">5+ years experience</div>
                   </div>
                 </div>
-                <div className="text-left">
-                  <div className="text-sm text-[var(--muted)] mb-2">Match Result</div>
-                  <div className="bg-[var(--background)] rounded-lg p-4">
+                <div className="text-left p-6">
+                  <div className="text-xs font-black uppercase tracking-wider mb-3 text-[var(--primary)]">Match Result</div>
+                  <div className="bg-[var(--card-bg)] border-2 border-[var(--border)] p-4">
                     <div className="flex items-center gap-4 mb-3">
                       <div className="score-badge score-a">92</div>
                       <div>
-                        <div className="font-semibold">Excellent Match</div>
-                        <div className="text-sm text-[var(--muted)]">Grade: A</div>
+                        <div className="font-black uppercase text-xs tracking-wider">Excellent Match</div>
+                        <div className="text-xs text-[var(--muted)] font-mono">Grade: A</div>
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-2">
@@ -114,13 +114,13 @@ export default function Home() {
       <section id="features" className="py-20 px-6 bg-[var(--card-bg)]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Powerful Features</h2>
-            <p className="text-[var(--muted)] text-lg max-w-2xl mx-auto">
+            <h2 className="text-sm font-black uppercase tracking-wider mb-3 text-[var(--primary)]">Powerful Features</h2>
+            <p className="text-[var(--muted)] text-base max-w-2xl mx-auto font-mono">
               Everything you need to streamline your hiring process
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6">
             {[
               {
                 icon: "",
@@ -153,10 +153,9 @@ export default function Home() {
                 description: "Get instant results with our optimized processing engine. No waiting."
               }
             ].map((feature, i) => (
-              <div key={i} className="card animate-fade-in" style={{animationDelay: `${i * 0.1}s`}}>
-                <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-[var(--muted)]">{feature.description}</p>
+              <div key={i} className="border-4 border-[var(--border)] bg-[var(--background)] p-6 animate-fade-in transition-all hover:border-[var(--primary)]" style={{animationDelay: `${i * 0.1}s`}}>
+                <h3 className="text-sm font-black uppercase tracking-wider mb-3">{feature.title}</h3>
+                <p className="text-[var(--muted)] text-sm font-mono leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -167,22 +166,22 @@ export default function Home() {
       <section id="how-it-works" className="py-20 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">How It Works</h2>
-            <p className="text-[var(--muted)] text-lg">Three simple steps to better hiring</p>
+            <h2 className="text-sm font-black uppercase tracking-wider mb-3 text-[var(--primary)]">How It Works</h2>
+            <p className="text-[var(--muted)] text-base font-mono">Three simple steps to better hiring</p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6">
             {[
               { step: "1", title: "Paste Resume", desc: "Copy and paste resume text into the dashboard" },
               { step: "2", title: "Add Job Description", desc: "Enter the job requirements you're hiring for" },
               { step: "3", title: "Get Insights", desc: "Receive match score, skill analysis, and recommendations" },
             ].map((item, i) => (
-              <div key={i} className="text-center animate-fade-in" style={{animationDelay: `${i * 0.15}s`}}>
-                <div className="w-16 h-16 rounded-full gradient-bg text-white text-2xl font-bold flex items-center justify-center mx-auto mb-4">
+              <div key={i} className="text-center border-4 border-[var(--border)] bg-[var(--card-bg)] p-6 animate-fade-in transition-all hover:border-[var(--primary)]" style={{animationDelay: `${i * 0.15}s`}}>
+                <div className="w-16 h-16 border-4 border-[var(--primary)] bg-[var(--background)] text-[var(--primary)] text-2xl font-black flex items-center justify-center mx-auto mb-4">
                   {item.step}
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                <p className="text-[var(--muted)]">{item.desc}</p>
+                <h3 className="text-sm font-black uppercase tracking-wider mb-3">{item.title}</h3>
+                <p className="text-[var(--muted)] text-sm font-mono leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
