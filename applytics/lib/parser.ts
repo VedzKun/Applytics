@@ -87,24 +87,218 @@ function guessName(text: string): string | undefined {
 }
 
 const KNOWN_SKILLS = [
-  'javascript', 'typescript', 'react', 'react.js', 'reactjs', 'next.js', 'nextjs', 'next',
-  'node', 'node.js', 'nodejs', 'express', 'express.js',
-  'python', 'django', 'flask', 'fastapi',
-  'java', 'spring', 'spring boot', 'springboot',
-  'c#', '.net', 'asp.net', 'c++', 'c',
-  'go', 'golang', 'rust', 'ruby', 'rails', 'ruby on rails',
-  'php', 'laravel', 'symfony',
-  'sql', 'mysql', 'postgresql', 'postgres', 'mongodb', 'redis', 'elasticsearch',
-  'aws', 'azure', 'gcp', 'google cloud', 'docker', 'kubernetes', 'k8s',
-  'terraform', 'ansible', 'jenkins', 'ci/cd', 'git', 'github', 'gitlab',
-  'html', 'html5', 'css', 'css3', 'sass', 'scss', 'tailwind', 'tailwindcss',
-  'vue', 'vue.js', 'vuejs', 'angular', 'svelte',
-  'graphql', 'rest', 'restful', 'api',
+  // JavaScript / TypeScript Ecosystem
+  'javascript', 'typescript', 'js', 'ts', 'ecmascript', 'es6', 'es2015',
+  'react', 'react.js', 'reactjs', 'react native', 'react-native', 'reactnative',
+  'next.js', 'nextjs', 'next', 'remix', 'gatsby', 'astro',
+  'node', 'node.js', 'nodejs', 'express', 'express.js', 'expressjs', 'nestjs', 'nest.js', 'nest',
+  'fastify', 'koa', 'hapi', 'adonis', 'adonisjs',
+  'vue', 'vue.js', 'vuejs', 'vue 3', 'nuxt', 'nuxt.js', 'nuxtjs',
+  'angular', 'angularjs', 'angular 2', 'angular 17',
+  'svelte', 'sveltekit', 'solid', 'solidjs', 'qwik',
+  'jquery', 'backbone', 'ember', 'ember.js',
+  'webpack', 'vite', 'rollup', 'parcel', 'esbuild', 'turbopack',
+  'babel', 'swc', 'typescript compiler', 'tsc',
+  'npm', 'yarn', 'pnpm', 'bun',
+  
+  // Python Ecosystem
+  'python', 'python3', 'django', 'flask', 'fastapi', 'pyramid',
+  'tornado', 'bottle', 'cherrypy', 'web2py',
+  'celery', 'asyncio', 'uvicorn', 'gunicorn',
+  'sqlalchemy', 'alembic', 'pydantic', 'marshmallow',
+  
+  // Java / JVM Ecosystem
+  'java', 'java 8', 'java 11', 'java 17', 'java 21',
+  'spring', 'spring boot', 'springboot', 'spring framework', 'spring mvc', 'spring data',
+  'spring cloud', 'spring security', 'hibernate', 'jpa',
+  'maven', 'gradle', 'ant',
+  'kotlin', 'scala', 'groovy', 'clojure',
+  'micronaut', 'quarkus', 'vertx', 'vert.x', 'dropwizard',
+  'jakarta ee', 'java ee', 'jsp', 'jsf', 'servlets',
+  
+  // .NET Ecosystem
+  'c#', 'csharp', 'c sharp', '.net', 'dotnet', 'asp.net', 'asp.net core',
+  '.net core', '.net 6', '.net 7', '.net 8', 'blazor',
+  'entity framework', 'ef core', 'linq', 'xamarin', 'maui',
+  'wpf', 'winforms', 'uwp',
+  'f#', 'fsharp', 'vb.net', 'visual basic',
+  
+  // Systems Programming
+  'c', 'c++', 'cpp', 'c++11', 'c++14', 'c++17', 'c++20',
+  'rust', 'go', 'golang', 'zig',
+  'assembly', 'webassembly', 'wasm',
+  
+  // Mobile Development
+  'ios', 'swift', 'swiftui', 'objective-c', 'cocoa', 'cocoapods',
+  'android', 'android studio', 'jetpack compose',
+  'flutter', 'dart', 'ionic', 'cordova', 'phonegap',
+  'xamarin', 'react native', 'expo',
+  
+  // Ruby Ecosystem
+  'ruby', 'ruby on rails', 'rails', 'ror', 'sinatra', 'hanami',
+  'rspec', 'minitest', 'bundler', 'rake',
+  
+  // PHP Ecosystem
+  'php', 'php 8', 'laravel', 'symfony', 'codeigniter', 'yii',
+  'wordpress', 'drupal', 'joomla', 'magento',
+  'composer', 'phpunit',
+  
+  // Databases - SQL
+  'sql', 'mysql', 'postgresql', 'postgres', 'mariadb',
+  'sqlite', 'microsoft sql server', 'mssql', 't-sql', 'sql server',
+  'oracle', 'oracle db', 'pl/sql',
+  'cockroachdb', 'vitess', 'yugabytedb',
+  
+  // Databases - NoSQL
+  'mongodb', 'mongo', 'mongoose', 'cassandra', 'couchdb',
+  'dynamodb', 'firestore', 'firebase', 'realm',
+  'neo4j', 'arangodb', 'orientdb', 'graph database',
+  
+  // Caching & In-Memory
+  'redis', 'memcached', 'hazelcast', 'ignite', 'valkey',
+  
+  // Search & Analytics
+  'elasticsearch', 'elastic', 'opensearch', 'solr',
+  'algolia', 'meilisearch', 'typesense',
+  
+  // Message Queues & Streaming
+  'kafka', 'apache kafka', 'rabbitmq', 'activemq', 'zeromq',
+  'pulsar', 'nats', 'mqtt', 'redis streams',
+  'amazon sqs', 'azure service bus', 'google pub/sub',
+  
+  // Cloud Platforms
+  'aws', 'amazon web services', 'azure', 'microsoft azure', 'gcp', 'google cloud', 'google cloud platform',
+  'heroku', 'digitalocean', 'linode', 'vultr', 'netlify', 'vercel',
+  'cloudflare', 'cloudflare workers', 'aws lambda', 'azure functions',
+  
+  // AWS Services
+  's3', 'ec2', 'rds', 'dynamodb', 'lambda', 'cloudfront',
+  'route53', 'elb', 'elastic beanstalk', 'ecs', 'eks', 'fargate',
+  'cloudformation', 'cloudwatch', 'sns', 'sqs', 'api gateway',
+  'cognito', 'iam', 'vpc', 'step functions', 'eventbridge',
+  
+  // Azure Services
+  'azure devops', 'azure active directory', 'azure sql', 'cosmos db',
+  'azure storage', 'azure app service', 'azure kubernetes', 'aks',
+  
+  // GCP Services
+  'compute engine', 'cloud storage', 'cloud functions', 'cloud run',
+  'bigquery', 'dataflow', 'pub/sub', 'gke', 'cloud sql',
+  
+  // Containers & Orchestration
+  'docker', 'docker compose', 'podman', 'containerd',
+  'kubernetes', 'k8s', 'helm', 'kustomize', 'istio', 'linkerd',
+  'rancher', 'openshift', 'nomad', 'docker swarm',
+  
+  // Infrastructure as Code
+  'terraform', 'terragrunt', 'pulumi', 'cloudformation', 'cdk',
+  'ansible', 'puppet', 'chef', 'saltstack',
+  'bicep', 'arm templates',
+  
+  // CI/CD
+  'jenkins', 'github actions', 'gitlab ci', 'circleci', 'travis ci',
+  'azure pipelines', 'teamcity', 'bamboo', 'drone',
+  'argo cd', 'flux', 'spinnaker', 'harness',
+  'ci/cd', 'continuous integration', 'continuous deployment',
+  
+  // Version Control
+  'git', 'github', 'gitlab', 'bitbucket', 'svn', 'mercurial',
+  'git flow', 'trunk based development',
+  
+  // Monitoring & Observability
+  'prometheus', 'grafana', 'datadog', 'new relic', 'dynatrace',
+  'splunk', 'elk', 'elk stack', 'logstash', 'kibana',
+  'loki', 'jaeger', 'zipkin', 'opentelemetry', 'otel',
+  'sentry', 'bugsnag', 'rollbar', 'pagerduty',
+  
+  // Frontend Technologies
+  'html', 'html5', 'css', 'css3', 'sass', 'scss', 'less', 'stylus',
+  'tailwind', 'tailwindcss', 'bootstrap', 'material-ui', 'mui',
+  'chakra ui', 'ant design', 'bulma', 'foundation',
+  'styled-components', 'emotion', 'css modules', 'postcss',
+  'bem', 'css-in-js',
+  
+  // State Management
+  'redux', 'redux toolkit', 'mobx', 'zustand', 'jotai', 'recoil',
+  'vuex', 'pinia', 'ngrx', 'rxjs',
+  
+  // Testing
+  'jest', 'mocha', 'chai', 'jasmine', 'vitest',
+  'react testing library', 'enzyme', 'cypress', 'playwright',
+  'selenium', 'webdriver', 'puppeteer',
+  'junit', 'testng', 'mockito', 'pytest', 'unittest',
+  'rspec', 'phpunit', 'karma', 'protractor',
+  'postman', 'insomnia', 'pact', 'contract testing',
+  'tdd', 'bdd', 'test driven development', 'behavior driven development',
+  
+  // API Technologies
+  'rest', 'restful', 'api', 'graphql', 'apollo', 'relay',
+  'grpc', 'protobuf', 'protocol buffers', 'thrift',
+  'soap', 'xml-rpc', 'json-rpc', 'websockets', 'socket.io',
+  'openapi', 'swagger', 'postman', 'api design',
+  
+  // Machine Learning & AI
   'machine learning', 'ml', 'deep learning', 'ai', 'artificial intelligence',
-  'tensorflow', 'pytorch', 'keras', 'scikit-learn', 'pandas', 'numpy',
-  'figma', 'sketch', 'adobe xd', 'photoshop', 'illustrator',
-  'agile', 'scrum', 'jira', 'confluence',
-  'linux', 'unix', 'bash', 'shell', 'powershell',
+  'tensorflow', 'pytorch', 'keras', 'scikit-learn', 'sklearn',
+  'pandas', 'numpy', 'scipy', 'matplotlib', 'seaborn',
+  'jupyter', 'jupyter notebook', 'colab',
+  'opencv', 'computer vision', 'nlp', 'natural language processing',
+  'transformers', 'hugging face', 'bert', 'gpt', 'llm',
+  'langchain', 'llamaindex', 'vector database', 'pinecone', 'weaviate',
+  'mlflow', 'kubeflow', 'sagemaker', 'vertex ai',
+  'xgboost', 'lightgbm', 'catboost', 'random forest',
+  'neural networks', 'cnn', 'rnn', 'lstm', 'gan',
+  
+  // Data Engineering
+  'spark', 'apache spark', 'pyspark', 'hadoop', 'hive',
+  'airflow', 'apache airflow', 'dagster', 'prefect',
+  'dbt', 'fivetran', 'airbyte', 'kafka', 'flink',
+  'snowflake', 'databricks', 'redshift', 'bigquery',
+  'etl', 'elt', 'data pipeline', 'data warehouse',
+  
+  // Design & UI/UX
+  'figma', 'sketch', 'adobe xd', 'invision', 'zeplin',
+  'photoshop', 'illustrator', 'after effects', 'premiere pro',
+  'ui design', 'ux design', 'interaction design', 'user research',
+  'wireframing', 'prototyping', 'usability testing',
+  
+  // Project Management & Collaboration
+  'agile', 'scrum', 'kanban', 'lean', 'safe',
+  'jira', 'confluence', 'trello', 'asana', 'monday',
+  'notion', 'clickup', 'linear', 'shortcut',
+  'slack', 'microsoft teams', 'zoom', 'miro', 'mural',
+  
+  // Security
+  'oauth', 'oauth2', 'jwt', 'saml', 'openid connect',
+  'ssl', 'tls', 'https', 'encryption', 'hashing',
+  'penetration testing', 'vulnerability assessment', 'owasp',
+  'security audits', 'compliance', 'gdpr', 'hipaa', 'soc2',
+  'vault', 'hashicorp vault', 'secrets management',
+  
+  // Operating Systems & Tools
+  'linux', 'unix', 'ubuntu', 'debian', 'centos', 'rhel', 'fedora',
+  'macos', 'windows', 'windows server',
+  'bash', 'shell', 'zsh', 'fish', 'powershell',
+  'vim', 'emacs', 'nano', 'vscode', 'visual studio code',
+  'intellij', 'pycharm', 'webstorm', 'eclipse', 'netbeans',
+  
+  // Blockchain & Web3
+  'blockchain', 'ethereum', 'solidity', 'smart contracts',
+  'web3', 'nft', 'defi', 'cryptocurrency', 'bitcoin',
+  'hyperledger', 'truffle', 'hardhat', 'metamask',
+  
+  // Other Languages
+  'elixir', 'phoenix', 'erlang', 'haskell', 'ocaml',
+  'lua', 'perl', 'r', 'matlab', 'julia',
+  'shell scripting', 'batch scripting',
+  
+  // Soft Skills & Methodologies
+  'leadership', 'team management', 'mentoring', 'coaching',
+  'communication', 'presentation', 'technical writing',
+  'problem solving', 'critical thinking', 'analytical',
+  'microservices', 'monolith', 'event driven', 'serverless',
+  'domain driven design', 'ddd', 'solid', 'design patterns',
+  'clean code', 'refactoring', 'code review', 'pair programming',
 ];
 
 function extractSkills(text: string): string[] {

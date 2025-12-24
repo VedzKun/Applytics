@@ -2,6 +2,12 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
+import { 
+  RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
+  PieChart, Pie, Cell, LineChart, Line,
+  ComposedChart, Area
+} from 'recharts';
 
 // Force dynamic rendering to prevent prerendering issues with localStorage
 export const dynamic = 'force-dynamic';
@@ -1275,6 +1281,121 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
+                {/* Visual Charts Section */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* Radar Chart for Skills Match */}
+                  <div className="border-4 border-[var(--border)] p-6 bg-[var(--card-bg)]">
+                    <div className="border-b-2 border-[var(--border)] pb-3 mb-6">
+                      <h2 className="text-sm font-black uppercase tracking-wider">SKILLS RADAR</h2>
+                    </div>
+                    <ResponsiveContainer width="100%" height={300}>
+                      <RadarChart data={[
+                        { category: 'Skills', score: matchResult.breakdown.skillScore, fullMark: 100 },
+                        { category: 'Experience', score: matchResult.breakdown.experienceScore, fullMark: 100 },
+                        { category: 'Education', score: matchResult.breakdown.educationScore, fullMark: 100 },
+                        { category: 'Overall', score: matchResult.score, fullMark: 100 },
+                      ]}>
+                        <PolarGrid stroke="var(--border)" />
+                        <PolarAngleAxis dataKey="category" tick={{ fill: 'var(--muted)', fontSize: 12, fontWeight: 'bold' }} />
+                        <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: 'var(--muted)', fontSize: 10 }} />
+                        <Radar name="Score" dataKey="score" stroke="var(--primary)" fill="var(--primary)" fillOpacity={0.6} />
+                      </RadarChart>
+                    </ResponsiveContainer>
+                  </div>
+
+                  {/* Bar Chart for Score Breakdown */}
+                  <div className="border-4 border-[var(--border)] p-6 bg-[var(--card-bg)]">
+                    <div className="border-b-2 border-[var(--border)] pb-3 mb-6">
+                      <h2 className="text-sm font-black uppercase tracking-wider">SCORE COMPARISON</h2>
+                    </div>
+                    <ResponsiveContainer width="100%" height={300}>
+                      <BarChart data={[
+                        { name: 'Skills', score: matchResult.breakdown.skillScore },
+                        { name: 'Experience', score: matchResult.breakdown.experienceScore },
+                        { name: 'Education', score: matchResult.breakdown.educationScore },
+                        { name: 'Overall', score: matchResult.score },
+                      ]}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                        <XAxis dataKey="name" tick={{ fill: 'var(--muted)', fontSize: 11, fontWeight: 'bold' }} />
+                        <YAxis domain={[0, 100]} tick={{ fill: 'var(--muted)', fontSize: 10 }} />
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: 'var(--card-bg)', 
+                            border: '2px solid var(--border)',
+                            fontFamily: 'monospace',
+                            fontSize: '12px'
+                          }} 
+                        />
+                        <Bar dataKey="score" fill="var(--primary)" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                {/* Skills Distribution Pie Chart */}
+                {(matchResult.matchedSkills.length > 0 || matchResult.missingSkills.length > 0 || matchResult.bonusSkills.length > 0) && (
+                  <div className="border-4 border-[var(--border)] p-6 bg-[var(--card-bg)]">
+                    <div className="border-b-2 border-[var(--border)] pb-3 mb-6">
+                      <h2 className="text-sm font-black uppercase tracking-wider">SKILLS DISTRIBUTION</h2>
+                    </div>
+                    <div className="flex flex-col md:flex-row items-center gap-8">
+                      <ResponsiveContainer width="100%" height={300}>
+                        <PieChart>
+                          <Pie
+                            data={[
+                              { name: 'Matched Skills', value: matchResult.matchedSkills.length, color: 'var(--primary)' },
+                              { name: 'Missing Skills', value: matchResult.missingSkills.length, color: 'var(--danger)' },
+                              { name: 'Bonus Skills', value: matchResult.bonusSkills.length, color: 'var(--secondary)' },
+                            ].filter(item => item.value > 0)}
+                            cx="50%"
+                            cy="50%"
+                            labelLine={false}
+                            label={({ name, percent }) => `${name}: ${((percent || 0) * 100).toFixed(0)}%`}
+                            outerRadius={100}
+                            fill="#8884d8"
+                            dataKey="value"
+                          >
+                            {[
+                              { name: 'Matched Skills', value: matchResult.matchedSkills.length, color: '#3b82f6' },
+                              { name: 'Missing Skills', value: matchResult.missingSkills.length, color: '#ef4444' },
+                              { name: 'Bonus Skills', value: matchResult.bonusSkills.length, color: '#10b981' },
+                            ].filter(item => item.value > 0).map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={entry.color} />
+                            ))}
+                          </Pie>
+                          <Tooltip 
+                            contentStyle={{ 
+                              backgroundColor: 'var(--card-bg)', 
+                              border: '2px solid var(--border)',
+                              fontFamily: 'monospace'
+                            }} 
+                          />
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="flex flex-col gap-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-6 h-6 bg-[#3b82f6]"></div>
+                          <span className="font-mono text-sm">
+                            Matched: <span className="font-black">{matchResult.matchedSkills.length}</span>
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="w-6 h-6 bg-[#ef4444]"></div>
+                          <span className="font-mono text-sm">
+                            Missing: <span className="font-black">{matchResult.missingSkills.length}</span>
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="w-6 h-6 bg-[#10b981]"></div>
+                          <span className="font-mono text-sm">
+                            Bonus: <span className="font-black">{matchResult.bonusSkills.length}</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Skills Analysis */}
                 <div className="grid md:grid-cols-3 gap-6">
                   <div className="border-4 border-[var(--border)] bg-[var(--card-bg)]">
@@ -1426,6 +1547,115 @@ export default function DashboardPage() {
                           </div>
                         </div>
                       ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Visual Charts for Strength Analysis */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* Category Scores Radar Chart */}
+                  <div className="border-4 border-[var(--border)] p-6 bg-[var(--card-bg)]">
+                    <div className="border-b-2 border-[var(--border)] pb-3 mb-6">
+                      <h2 className="text-sm font-black uppercase tracking-wider">CATEGORY RADAR</h2>
+                    </div>
+                    <ResponsiveContainer width="100%" height={300}>
+                      <RadarChart data={strengthResult.categories.map(cat => ({
+                        category: cat.name,
+                        score: (cat.score / cat.maxScore) * 100,
+                        fullMark: 100
+                      }))}>
+                        <PolarGrid stroke="var(--border)" />
+                        <PolarAngleAxis dataKey="category" tick={{ fill: 'var(--muted)', fontSize: 11, fontWeight: 'bold' }} />
+                        <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: 'var(--muted)', fontSize: 10 }} />
+                        <Radar name="Score %" dataKey="score" stroke="var(--secondary)" fill="var(--secondary)" fillOpacity={0.6} />
+                      </RadarChart>
+                    </ResponsiveContainer>
+                  </div>
+
+                  {/* Category Scores Bar Chart */}
+                  <div className="border-4 border-[var(--border)] p-6 bg-[var(--card-bg)]">
+                    <div className="border-b-2 border-[var(--border)] pb-3 mb-6">
+                      <h2 className="text-sm font-black uppercase tracking-wider">SCORE BREAKDOWN</h2>
+                    </div>
+                    <ResponsiveContainer width="100%" height={300}>
+                      <BarChart data={strengthResult.categories.map(cat => ({
+                        name: cat.name,
+                        score: cat.score,
+                        max: cat.maxScore
+                      }))}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                        <XAxis dataKey="name" tick={{ fill: 'var(--muted)', fontSize: 10, fontWeight: 'bold' }} angle={-15} textAnchor="end" height={70} />
+                        <YAxis tick={{ fill: 'var(--muted)', fontSize: 10 }} />
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: 'var(--card-bg)', 
+                            border: '2px solid var(--border)',
+                            fontFamily: 'monospace',
+                            fontSize: '12px'
+                          }} 
+                        />
+                        <Legend wrapperStyle={{ fontSize: '11px', fontWeight: 'bold' }} />
+                        <Bar dataKey="score" fill="var(--secondary)" name="Score" />
+                        <Bar dataKey="max" fill="var(--border)" name="Max" opacity={0.3} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                {/* Completeness Gauge */}
+                <div className="border-4 border-[var(--border)] p-6 bg-[var(--card-bg)]">
+                  <div className="border-b-2 border-[var(--border)] pb-3 mb-6">
+                    <h2 className="text-sm font-black uppercase tracking-wider">RESUME COMPLETENESS</h2>
+                  </div>
+                  <div className="flex flex-col md:flex-row items-center justify-around gap-8">
+                    <div className="relative w-64 h-64">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={[
+                              { name: 'Complete', value: strengthResult.completeness },
+                              { name: 'Incomplete', value: 100 - strengthResult.completeness }
+                            ]}
+                            cx="50%"
+                            cy="50%"
+                            startAngle={180}
+                            endAngle={0}
+                            innerRadius={60}
+                            outerRadius={100}
+                            paddingAngle={0}
+                            dataKey="value"
+                          >
+                            <Cell fill="var(--secondary)" />
+                            <Cell fill="var(--border)" opacity={0.3} />
+                          </Pie>
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="absolute inset-0 flex items-center justify-center pb-8">
+                        <div className="text-center">
+                          <div className="text-5xl font-black font-mono text-[var(--secondary)]">{strengthResult.completeness}%</div>
+                          <div className="text-xs text-[var(--muted)] uppercase tracking-wider font-mono mt-1">Complete</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="space-y-4 flex-1">
+                      <div className="border-2 border-[var(--border)] p-4 bg-[var(--page-bg)]">
+                        <div className="text-sm font-black uppercase tracking-wider mb-2">Overall Score</div>
+                        <div className="flex items-center gap-4">
+                          <div className="text-4xl font-black font-mono">{strengthResult.overallScore}</div>
+                          <div className="flex-1">
+                            <div className="h-4 border-2 border-[var(--border)] bg-[var(--background)]">
+                              <div
+                                className="h-full bg-[var(--secondary)]"
+                                style={{ width: `${strengthResult.overallScore}%` }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="border-2 border-[var(--border)] p-4 bg-[var(--page-bg)]">
+                        <div className="text-sm font-black uppercase tracking-wider mb-2">Grade</div>
+                        <div className="text-4xl font-black text-[var(--secondary)]">{strengthResult.grade}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1681,6 +1911,136 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
+                {/* ATS Visual Charts */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* ATS Score Gauge */}
+                  <div className="border-4 border-[var(--border)] p-6 bg-[var(--card-bg)]">
+                    <div className="border-b-2 border-[var(--border)] pb-3 mb-6">
+                      <h2 className="text-sm font-black uppercase tracking-wider">ATS PASS LIKELIHOOD</h2>
+                    </div>
+                    <div className="relative">
+                      <ResponsiveContainer width="100%" height={250}>
+                        <PieChart>
+                          <Pie
+                            data={[
+                              { name: 'Pass', value: atsResult.passRate },
+                              { name: 'Fail', value: 100 - atsResult.passRate }
+                            ]}
+                            cx="50%"
+                            cy="50%"
+                            startAngle={180}
+                            endAngle={0}
+                            innerRadius={70}
+                            outerRadius={110}
+                            paddingAngle={0}
+                            dataKey="value"
+                          >
+                            <Cell fill={atsResult.passRate >= 80 ? '#10b981' : atsResult.passRate >= 60 ? '#3b82f6' : atsResult.passRate >= 40 ? '#f59e0b' : '#ef4444'} />
+                            <Cell fill="var(--border)" opacity={0.2} />
+                          </Pie>
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="absolute inset-0 flex items-center justify-center pb-12">
+                        <div className="text-center">
+                          <div className="text-6xl font-black font-mono">{atsResult.passRate}%</div>
+                          <div className="text-xs text-[var(--muted)] uppercase tracking-wider font-mono mt-2">Pass Rate</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Issue Severity Breakdown */}
+                  <div className="border-4 border-[var(--border)] p-6 bg-[var(--card-bg)]">
+                    <div className="border-b-2 border-[var(--border)] pb-3 mb-6">
+                      <h2 className="text-sm font-black uppercase tracking-wider">ISSUES BY SEVERITY</h2>
+                    </div>
+                    <ResponsiveContainer width="100%" height={250}>
+                      <BarChart data={[
+                        { 
+                          severity: 'High', 
+                          count: atsResult.issues.filter(i => i.severity === 'high').length,
+                          fill: '#ef4444'
+                        },
+                        { 
+                          severity: 'Medium', 
+                          count: atsResult.issues.filter(i => i.severity === 'medium').length,
+                          fill: '#f59e0b'
+                        },
+                        { 
+                          severity: 'Low', 
+                          count: atsResult.issues.filter(i => i.severity === 'low').length,
+                          fill: '#3b82f6'
+                        },
+                      ]}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                        <XAxis dataKey="severity" tick={{ fill: 'var(--muted)', fontSize: 12, fontWeight: 'bold' }} />
+                        <YAxis allowDecimals={false} tick={{ fill: 'var(--muted)', fontSize: 10 }} />
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: 'var(--card-bg)', 
+                            border: '2px solid var(--border)',
+                            fontFamily: 'monospace',
+                            fontSize: '12px'
+                          }} 
+                        />
+                        <Bar dataKey="count" fill="#8884d8">
+                          {[
+                            { severity: 'High', count: atsResult.issues.filter(i => i.severity === 'high').length, fill: '#ef4444' },
+                            { severity: 'Medium', count: atsResult.issues.filter(i => i.severity === 'medium').length, fill: '#f59e0b' },
+                            { severity: 'Low', count: atsResult.issues.filter(i => i.severity === 'low').length, fill: '#3b82f6' },
+                          ].map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.fill} />
+                          ))}
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                {/* Issue Categories Pie Chart */}
+                {atsResult.issues.length > 0 && (
+                  <div className="border-4 border-[var(--border)] p-6 bg-[var(--card-bg)]">
+                    <div className="border-b-2 border-[var(--border)] pb-3 mb-6">
+                      <h2 className="text-sm font-black uppercase tracking-wider">ISSUES BY CATEGORY</h2>
+                    </div>
+                    <ResponsiveContainer width="100%" height={300}>
+                      <PieChart>
+                        <Pie
+                          data={Object.entries(
+                            atsResult.issues.reduce((acc, issue) => {
+                              acc[issue.category] = (acc[issue.category] || 0) + 1;
+                              return acc;
+                            }, {} as Record<string, number>)
+                          ).map(([category, count]) => ({ name: category, value: count }))}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={false}
+                          label={({ name, percent }) => `${name}: ${((percent || 0) * 100).toFixed(0)}%`}
+                          outerRadius={100}
+                          fill="#8884d8"
+                          dataKey="value"
+                        >
+                          {Object.entries(
+                            atsResult.issues.reduce((acc, issue) => {
+                              acc[issue.category] = (acc[issue.category] || 0) + 1;
+                              return acc;
+                            }, {} as Record<string, number>)
+                          ).map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'][index % 6]} />
+                          ))}
+                        </Pie>
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: 'var(--card-bg)', 
+                            border: '2px solid var(--border)',
+                            fontFamily: 'monospace'
+                          }} 
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                )}
+
                 {/* Recommendations */}
                 <div className="border-4 border-[var(--border)] bg-[var(--card-bg)]">
                   <div className="bg-[var(--primary)] text-white px-4 py-3 border-b-4 border-[var(--border)]">
@@ -1749,6 +2109,99 @@ export default function DashboardPage() {
                       </div>
                     ))}
                   </div>
+                </div>
+
+                {/* Keyword Visual Charts */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* Keyword Relevance Pie Chart */}
+                  <div className="border-4 border-[var(--border)] p-6 bg-[var(--card-bg)]">
+                    <div className="border-b-2 border-[var(--border)] pb-3 mb-6">
+                      <h2 className="text-sm font-black uppercase tracking-wider">RELEVANCE DISTRIBUTION</h2>
+                    </div>
+                    <ResponsiveContainer width="100%" height={300}>
+                      <PieChart>
+                        <Pie
+                          data={[
+                            { name: 'High Relevance', value: keywordAnalysis.keywords.filter(k => k.relevance === 'high').length },
+                            { name: 'Medium Relevance', value: keywordAnalysis.keywords.filter(k => k.relevance === 'medium').length },
+                            { name: 'Low Relevance', value: keywordAnalysis.keywords.filter(k => k.relevance === 'low').length },
+                          ].filter(item => item.value > 0)}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={false}
+                          label={({ name, percent }) => `${(name || '').split(' ')[0]}: ${((percent || 0) * 100).toFixed(0)}%`}
+                          outerRadius={100}
+                          fill="#8884d8"
+                          dataKey="value"
+                        >
+                          <Cell fill="#10b981" />
+                          <Cell fill="#3b82f6" />
+                          <Cell fill="#6b7280" />
+                        </Pie>
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: 'var(--card-bg)', 
+                            border: '2px solid var(--border)',
+                            fontFamily: 'monospace'
+                          }} 
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+
+                  {/* Top Keywords Bar Chart */}
+                  <div className="border-4 border-[var(--border)] p-6 bg-[var(--card-bg)]">
+                    <div className="border-b-2 border-[var(--border)] pb-3 mb-6">
+                      <h2 className="text-sm font-black uppercase tracking-wider">TOP 10 KEYWORDS</h2>
+                    </div>
+                    <ResponsiveContainer width="100%" height={300}>
+                      <BarChart data={keywordAnalysis.keywords.slice(0, 10).map(kw => ({
+                        word: kw.word.length > 12 ? kw.word.slice(0, 12) + '...' : kw.word,
+                        count: kw.count
+                      }))} layout="horizontal">
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                        <XAxis type="number" tick={{ fill: 'var(--muted)', fontSize: 10 }} />
+                        <YAxis dataKey="word" type="category" width={100} tick={{ fill: 'var(--muted)', fontSize: 10 }} />
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: 'var(--card-bg)', 
+                            border: '2px solid var(--border)',
+                            fontFamily: 'monospace',
+                            fontSize: '12px'
+                          }} 
+                        />
+                        <Bar dataKey="count" fill="var(--accent)" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                {/* Category Distribution */}
+                <div className="border-4 border-[var(--border)] p-6 bg-[var(--card-bg)]">
+                  <div className="border-b-2 border-[var(--border)] pb-3 mb-6">
+                    <h2 className="text-sm font-black uppercase tracking-wider">KEYWORD CATEGORIES</h2>
+                  </div>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={Object.entries(
+                      keywordAnalysis.keywords.reduce((acc, kw) => {
+                        acc[kw.category] = (acc[kw.category] || 0) + kw.count;
+                        return acc;
+                      }, {} as Record<string, number>)
+                    ).map(([category, total]) => ({ category, total }))}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                      <XAxis dataKey="category" tick={{ fill: 'var(--muted)', fontSize: 11, fontWeight: 'bold' }} />
+                      <YAxis tick={{ fill: 'var(--muted)', fontSize: 10 }} />
+                      <Tooltip 
+                        contentStyle={{ 
+                          backgroundColor: 'var(--card-bg)', 
+                          border: '2px solid var(--border)',
+                          fontFamily: 'monospace',
+                          fontSize: '12px'
+                        }} 
+                      />
+                      <Bar dataKey="total" fill="var(--accent)" />
+                    </BarChart>
+                  </ResponsiveContainer>
                 </div>
 
                 {/* Suggestions */}
