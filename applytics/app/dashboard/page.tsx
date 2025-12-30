@@ -166,14 +166,30 @@ export default function DashboardPage() {
   // Load saved analyses from localStorage on client side only
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      try {
-        const saved = localStorage.getItem('applytics-history');
-        if (saved) {
-          setSavedAnalyses(JSON.parse(saved));
+      (async () => {
+        try {
+          const local = localStorage.getItem('applytics-history');
+          const localArr = local ? JSON.parse(local) : [];
+          // Try loading server-side history and merge
+          try {
+            const res = await fetch('/api/history');
+            if (res.ok) {
+              const server = await res.json();
+              // merge server first, then local items that aren't on server
+              const merged = [...server, ...localArr.filter((l: any) => !server.find((s: any) => s.id === l.id))].slice(0, 10);
+              setSavedAnalyses(merged);
+              localStorage.setItem('applytics-history', JSON.stringify(merged));
+              return;
+            }
+          } catch (e) {
+            // ignore server errors, fallback to local
+          }
+
+          if (localArr.length) setSavedAnalyses(localArr);
+        } catch (err) {
+          console.error('Failed to load saved analyses:', err);
         }
-      } catch (err) {
-        console.error('Failed to load saved analyses:', err);
-      }
+      })();
     }
   }, []);
 
@@ -790,12 +806,44 @@ export default function DashboardPage() {
       result: { matchResult, strengthResult, parsed, resumeText: resumeText.slice(0, 200) }
     };
 
+    // Optimistically update UI
     const updated = [newAnalysis, ...savedAnalyses].slice(0, 10); // Keep last 10
     setSavedAnalyses(updated);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('applytics-history', JSON.stringify(updated));
-    }
     setError(null);
+
+    // Persist to server; fall back to localStorage if server fails
+    (async () => {
+      try {
+        const res = await fetch('/api/history', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newAnalysis),
+        });
+        if (!res.ok) throw new Error('Server rejected');
+        // keep server as source of truth next load
+        localStorage.setItem('applytics-history', JSON.stringify(updated));
+      } catch (e) {
+        try { localStorage.setItem('applytics-history', JSON.stringify(updated)); } catch {}
+      }
+    })();
+  };
+
+  // Rename an analysis (client + server)
+  const renameAnalysis = (id: string) => {
+    const current = savedAnalyses.find(a => a.id === id);
+    if (!current) return;
+    const newName = prompt('Rename analysis', current.name || '');
+    if (!newName) return;
+    const updated = savedAnalyses.map(a => a.id === id ? { ...a, name: newName } : a);
+    setSavedAnalyses(updated);
+    if (typeof window !== 'undefined') localStorage.setItem('applytics-history', JSON.stringify(updated));
+    (async () => {
+      try {
+        await fetch('/api/history', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, name: newName }) });
+      } catch (e) {
+        // ignore
+      }
+    })();
   };
 
   // Load a saved analysis
@@ -1127,6 +1175,44 @@ export default function DashboardPage() {
         {/* Results Section */}
         {(matchResult || parsed || strengthResult || atsResult || keywordAnalysis) && (
           <div className="animate-fade-in">
+            {/* Match History Panel (persistent) */}
+            <aside className="fixed right-6 top-36 w-80 max-h-[70vh] overflow-y-auto border-4 border-[var(--border)] bg-[var(--card-bg)] p-4 z-40 hidden md:block">
+              <div className="flex items-center justify-between mb-3">
+                <div className="text-xs font-black uppercase tracking-wider">Match History</div>
+                <div className="text-xs text-[var(--muted)]">{savedAnalyses.length}</div>
+              </div>
+              {savedAnalyses.length === 0 ? (
+                <div className="text-sm text-[var(--muted)]">No saved analyses yet. Use Save to persist results.</div>
+              ) : (
+                <div className="space-y-2">
+                  {savedAnalyses.map((a) => (
+                    <div key={a.id} className="p-2 border-2 border-transparent hover:border-[var(--primary)] rounded flex items-start gap-2">
+                      <div className="flex-1">
+                        <div className="text-xs font-black uppercase">{a.name || 'Unnamed'}</div>
+                        <div className="text-[var(--muted)] text-xs font-mono">{a.date}</div>
+                        <div className="text-[var(--muted)] text-xs mt-1 line-clamp-3">{(a.result?.resumeText || '').slice(0, 120)}</div>
+                      </div>
+                      <div className="flex flex-col gap-1 ml-2">
+                        <button onClick={() => loadSavedAnalysis(a)} className="text-[var(--primary)] text-xs font-black">Load</button>
+                        <button onClick={() => renameAnalysis(a.id)} className="text-[var(--muted)] text-xs">Rename</button>
+                        <button onClick={() => { navigator.clipboard?.writeText(JSON.stringify(a.result || {}, null, 2)); setShowCopyNotification(true); setTimeout(()=>setShowCopyNotification(false),1200); }} className="text-[var(--muted)] text-xs">Copy</button>
+                        <button onClick={async () => {
+                          // delete server-side then update UI
+                          try {
+                            await fetch(`/api/history?id=${encodeURIComponent(a.id)}`, { method: 'DELETE' });
+                          } catch (e) { /* ignore */ }
+                          deleteSavedAnalysis(a.id);
+                        }} className="text-red-500 text-xs">Del</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className="mt-3 border-t-2 border-[var(--border)] pt-3 flex gap-2">
+                <button onClick={() => { setSavedAnalyses([]); if (typeof window !== 'undefined') localStorage.removeItem('applytics-history'); }} className="text-xs text-red-500">Clear</button>
+                <button onClick={() => { const exportData = JSON.stringify(savedAnalyses, null, 2); const blob = new Blob([exportData], { type: 'application/json' }); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = `applytics-history-${Date.now()}.json`; link.click(); URL.revokeObjectURL(url); }} className="ml-auto text-xs text-[var(--primary)]">Export</button>
+              </div>
+            </aside>
             {/* Tab Navigation */}
             <div className="flex gap-2 mb-6 border-b-4 border-[var(--border)] overflow-x-auto">
               {matchResult && (
